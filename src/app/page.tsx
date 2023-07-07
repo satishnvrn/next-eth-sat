@@ -1,11 +1,30 @@
-import Image from 'next/image';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { findEthereumExists } from './lib/walletService';
+import { Button } from '@mui/material';
 
 export default function Home() {
+  const [ethereumExists, setEthereumExists] = useState('loading');
+
+  useEffect(() => {
+    const isWalletExists = findEthereumExists();
+    console.log('isWalletExists', isWalletExists);
+    if (isWalletExists) {
+      setEthereumExists('exists');
+    } else {
+      setEthereumExists('notExists');
+    }
+  }, []);
   return (
-    <div className="flex-1 py-12 px-8 bg-[#eaeff1]">
-      <div className="bg-white text-content-color rounded-lg max-w-[936] m-auto py-10 px-4">
-        Content
-      </div>
+    <div>
+      {ethereumExists === 'exists' && (
+        <div>
+          <Button variant="contained" color="primary">
+            Connect Fund Me Contract
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

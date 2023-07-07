@@ -24,7 +24,7 @@ export default function Sidebar() {
               <li className="flex w-full" key={title}>
                 <Link
                   href={href}
-                  className="cursor-pointer bg-transparent align-middle text-sidebar-text-color py-0.5 px-6 w-full hover:bg-hovered-sidebar-links"
+                  className="cursor-pointer bg-transparent align-middle text-sidebar-text-color py-2 px-6 w-full hover:bg-hovered-sidebar-links"
                 >
                   {icon({
                     className: 'mr-4',

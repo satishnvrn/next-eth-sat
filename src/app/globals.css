@@ -5,7 +5,7 @@
 /* rgb(51, 54, 59) */
 
 body {
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.5;
@@ -15,10 +15,15 @@ body {
 .sidebar-container {
   border-right: 1px solid rgba(0, 0, 0, 0.12);
   background-color: #081627;
+  padding-top: 20px;
 }
 
 .sidebar-menu-container {
   background-color: #101f33;
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgb(255,255,255,0.1);
 }
 
 .header-content {
