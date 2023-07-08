@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex min-h-screen">
           <Sidebar />
-          <main className="flex flex-1 flex-col">
+          <main className="flex flex-1 flex-col relative">
             <div className="flex flex-col shrink-0 bg-[#009be5] text-white px-6 min-h-12 items-center">
               <div className="flex flex-wrap flex-row -ml-2 header-content items-center py-4">
                 <div className="pl-2 pt-2">

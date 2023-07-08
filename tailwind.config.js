@@ -11,6 +11,7 @@ module.exports = {
         'hovered-sidebar-links': 'rgba(0, 155, 229, 0.12)',
         'sidebar-text-color': 'rgba(255, 255, 255, 0.7)',
         'content-color': 'rgba(0, 0, 0, 0.87)',
+        'dark-transparent': 'rgba(0, 0, 0, 0.5)'
       },
     },
   },
