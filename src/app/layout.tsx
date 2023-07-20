@@ -21,26 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex flex-1 flex-col relative">
-            <div className="flex flex-col shrink-0 bg-[#009be5] text-white px-6 min-h-12 items-center">
-              <div className="flex flex-wrap flex-row -ml-2 header-content items-center py-4">
-                <div className="pl-2 pt-2">
-                  <h1 className="m-0 font-medium text-2xl">Wallet</h1>
-                </div>
-              </div>
+        <html lang="en">
+          <body className={inter.className}>
+            <div className="flex min-h-screen">
+              <Sidebar>{children}</Sidebar>
             </div>
-            <div className="flex-1 py-12 px-8 bg-[#eaeff1]">
-              <div className="bg-white text-content-color rounded-lg max-w-[936] m-auto py-10 px-4">
-                {children}
-              </div>
-            </div>
-          </main>
-        </div>
-      </body>
-    </html>
+          </body>
+        </html>
   );
 }
