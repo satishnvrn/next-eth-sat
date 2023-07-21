@@ -4,9 +4,11 @@ import { useState } from 'react';
 import Button from './components/button';
 import NumberInput from './components/numberInput';
 import PageSpinner from './components/pageSpinner';
-import { useMoralis, useWeb3Contract } from 'react-moralis';
+import { useMoralis, useWeb3Contract, useTokenPrice } from 'react-moralis';
 import { fundMeAbi, fundMeContractAddresses } from './lib/constants';
-import { ethers } from 'ethers';
+import { ContractTransactionResponse, ethers } from 'ethers';
+import { useNotification } from '@web3uikit/core';
+import { Bell } from '@web3uikit/icons';
 
 const supportedChains = ['31337', '11155111'];
 const contractAddresses: Record<string, string[]> = fundMeContractAddresses;
@@ -16,41 +18,66 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const { isWeb3Enabled, chainId: chainIdHex } = useMoralis();
   const chainId = parseInt(chainIdHex || '0');
+  const dispatch = useNotification();
 
-  const {
-    runContractFunction: fundMe,
-    data: fundMeResponse,
-    isLoading: fundMeLoading,
-    isFetching: fundMeFetching
-  } = useWeb3Contract({
-    abi: fundMeAbi,
-    contractAddress: '0x93A30F9AaD5Be789A868383280345F44629C3Bae',
-    functionName: 'fund',
-    msgValue: ethers.parseEther(ethAmount).toString(),
-    params: {}
-  });
-  console.log('fundMe', fundMeResponse, fundMeLoading, fundMeFetching);
+  const { runContractFunction: fundMe } = useWeb3Contract(
+    {
+      abi: fundMeAbi,
+      contractAddress: contractAddresses?.[chainId]?.[0] || '',
+      functionName: 'fund',
+      msgValue: ethers.parseEther(ethAmount).toString(),
+      params: {},
+    },
+  );
 
-  const {
-    runContractFunction: withdraw,
-    data: withdrawResponse,
-    isLoading: withdrawLoading,
-    isFetching: withdrawFetching
-  } = useWeb3Contract({
-    abi: fundMeAbi,
-    contractAddress: '0x93A30F9AaD5Be789A868383280345F44629C3Bae',
-    functionName: 'withdraw',
-    msgValue: ethers.parseEther(ethAmount).toString(),
-    params: {}
-  });
-  console.log('withdraw', withdrawResponse, withdrawLoading, withdrawFetching);
+  const { runContractFunction: withdraw } =
+    useWeb3Contract({
+      abi: fundMeAbi,
+      contractAddress: contractAddresses?.[chainId]?.[0] || '',
+      functionName: 'withdraw',
+      msgValue: ethers.parseEther(ethAmount).toString(),
+      params: {},
+    });
+
+  const handleSuccess = async (tx: ContractTransactionResponse) => {
+    try {
+      await tx.wait(1);
+      dispatch({
+        type: 'info',
+        message: 'Transaction Complete!',
+        title: 'Transaction Notification',
+        position: 'topR',
+        icon: <Bell />,
+      });
+      setLoading(false);
+    } catch (error) {
+      console.log('error', error);
+      setLoading(false);
+    }
+  };
 
   const handleFundMe = async () => {
-    await fundMe();
+    setLoading(true);
+    await fundMe({
+      // @ts-ignore
+      onSuccess: handleSuccess,
+      onError: (error) => {
+        console.log(error);
+        setLoading(false);
+      },
+    });
   };
 
   const handleWithdraw = async () => {
-    await withdraw();
+    setLoading(true);
+    await withdraw({
+      // @ts-ignore
+      onSuccess: handleSuccess,
+      onError: (error) => {
+        console.log(error);
+        setLoading(false);
+      },
+    });
   };
 
   return (
@@ -58,11 +85,17 @@ export default function Home() {
       {loading && <PageSpinner />}
       {isWeb3Enabled && supportedChains.includes(chainId.toString()) && (
         <div>
-          <div className="flex flex-row justify-around">
+          {/* <div className="flex flex-row justify-around">
             <div className="mt-5">
               <Button
                 onClick={async () => {
                   console.log('getting balance ...');
+                  await fetchTokenPrice({
+                    params: {
+                      address: '0x93A30F9AaD5Be789A868383280345F44629C3Bae',
+                      chain: 'eth',
+                    },
+                  });
                 }}
               >
                 Get Balance
@@ -73,7 +106,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="flex gap-5">
             <NumberInput
               label="ETH Amount"

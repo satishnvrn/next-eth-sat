@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { NotificationProvider } from '@web3uikit/core';
 import { MoralisProvider } from 'react-moralis';
 import { ConnectButton } from '@web3uikit/web3';
+import { useState } from 'react';
 
 const menuItems = [
   {
@@ -71,7 +72,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex-1 py-12 px-8 bg-[#eaeff1]">
               <div className="absolute right-7 top-5">
-                <ConnectButton moralisAuth={false} />
+                <ConnectButton moralisAuth={false}/>
               </div>
               <div className="bg-white text-content-color rounded-lg max-w-[936] m-auto py-10 px-4">
                 {children}
